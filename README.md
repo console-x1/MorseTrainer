@@ -39,7 +39,7 @@ cd morse-trainer
 2. Install dependencies
 
 ```
-npm install sqlite3
+npm install
 ```
 
 ---
