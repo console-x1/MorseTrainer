@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "colors": "^1.4.0",
+    "sqlite3": "^6.0.1"
+  },
+  "name": "morse-trainer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/console-x1/MorseTrainer.git"
+  },
+  "author": "console-x1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/console-x1/MorseTrainer/issues"
+  },
+  "homepage": "https://github.com/console-x1/MorseTrainer#readme",
+  "description": ""
+}
