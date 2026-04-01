@@ -1,3 +1,19 @@
+const level1 = ["E", "T"];
+const level2 = [...level1, "A", "I", "M", "N"];
+const level3 = [...level2, "S", "U", "R", "W", "D", "G", "K", "O"];
+const level4 = [...level3, "B", "H", "L", "P", "V", "F", "J", "Q", "X", "C", "Y", "Z"];
+const level5 = [...level4, "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+const level6 = [...level5, ".", ",", "?", "'", "!", "/"];
+
+const LEVELS = {
+  1: level1,
+  2: level2,
+  3: level3,
+  4: level4,
+  5: level5,
+  6: level6
+};
+
 const MORSE = {
     A: ".-",
     B: "-...",
@@ -43,14 +59,7 @@ const MORSE = {
     "/": "-..-."
 }
 
-function getRandomLetter(level=4, lastletter) {
-    const level1 = ["E", "T"];
-    const level2 = [...level1, "A", "I", "M", "N"];
-    const level3 = [...level2, "S", "U", "R", "W", "D", "G", "K", "O"];
-    const level4 = [...level3, "B", "H", "L", "P", "V", "F", "J", "Q", "X", "C", "Y", "Z"];
-    const level5 = [...level4, "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-    const level6 = [...level5, ".", ",", "?", "'", "!", "/"];
-
+function getRandomLetter(level = 4, lastletter) {
     let letter = '';
     if (level == 1) letter = level1[Math.floor(Math.random() * level1.length)];
     else if (level == 2) letter = level2[Math.floor(Math.random() * level2.length)];
@@ -60,8 +69,8 @@ function getRandomLetter(level=4, lastletter) {
     else letter = level6[Math.floor(Math.random() * level6.length)];
 
     if (letter == lastletter && level !== 1) return getRandomLetter(level, lastletter)
-    
+
     return letter
 }
 
-module.exports = { MORSE, getRandomLetter };
+module.exports = { LEVELS, MORSE, getRandomLetter };

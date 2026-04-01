@@ -1,6 +1,6 @@
 const readline = require('readline');
 
-const { MORSE, getRandomLetter } = require('./morse');
+const { LEVELS, MORSE, getRandomLetter } = require('./morse');
 const { playLetter } = require('./audio');
 const { saveScore, getMaxStreak } = require('./db');
 require('colors');
@@ -10,8 +10,27 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-function ask(question) {
-  return new Promise(resolve => rl.question(question, answer => resolve(answer)));
+function ask(question, level) {
+  return new Promise(resolve => {
+    const askAgain = () => {
+      rl.question(question, answer => {
+        const value = answer.trim();
+
+        if (!value) {
+          return askAgain();
+        }
+
+        if (level && !LEVELS[level].includes(value.toUpperCase())) {
+          console.log("Invalid input".red);
+          return askAgain();
+        }
+
+        resolve(value);
+      });
+    };
+
+    askAgain();
+  });
 }
 
 async function chooseGamemode() {
@@ -42,13 +61,14 @@ async function loop() {
   let streak = 0;
   let level;
   let lastletter = "";
-  let maxStreak = await getMaxStreak(gamemode.toLowerCase());
+  let maxStreak = 0;
 
   while (true) {
     console.log("◜══════════════════");
 
     if (!level) {
       level = await ask('| Level  >> '.grey);
+      maxStreak = await getMaxStreak(level, gamemode.toLowerCase())
     }
 
     const letter = getRandomLetter(level, lastletter);
@@ -61,7 +81,7 @@ async function loop() {
       console.log('| Morse  >>'.blue, code);
     }
 
-    const answer = await ask('| Letter >> '.grey);
+    const answer = await ask('| Letter >> '.grey, level);
 
     const correct =
       answer &&
