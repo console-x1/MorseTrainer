@@ -16,14 +16,17 @@ function saveScore(score, level, gamemode='sound') {
     db.run(`INSERT INTO scores(max_streak, level, gamemode) VALUES(?, ?, ?)`, [score, level, gamemode]);
 }
 
-function getMaxStreak(gamemode='sound') {
-    let maxStreak = 0;
-    db.get(`SELECT MAX(max_streak) FROM scores WHERE gamemode = ?`, [gamemode], (err, row) => {
-        if (err) console.log(err)
-
-        maxStreak = row?.['MAX(max_streak)'] || 0;
-    });
-    return maxStreak;
+function getMaxStreak(level, gamemode = 'sound') {
+  return new Promise((resolve, reject) => {
+    db.get(
+      `SELECT MAX(max_streak) as max FROM scores WHERE level = ? AND gamemode = ?`,
+      [level, gamemode],
+      (err, row) => {
+        if (err) return reject(err);
+        resolve(row.max || 0);
+      }
+    );
+  });
 }
 
 module.exports = { saveScore, getMaxStreak };
