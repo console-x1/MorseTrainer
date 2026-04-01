@@ -1,17 +1,21 @@
 # Morse Trainer (CLI - Node.js)
 
-A minimal command-line Morse code trainer built with Node.js.
-The app plays a Morse sequence (audio) and prompts you to guess the corresponding letter. It tracks your current streak and saves your best scores using SQLite.
+A minimalist Morse code trainer in the terminal, now with both **Sound** and **Visual** modes.
+You either hear the Morse… or stare at it like it owes you money. Your job is still the same: guess the letter.
 
 ---
 
 ## Features
 
-* 🔊 Plays Morse code using system audio (Windows PowerShell)
-* 🎯 Random letter training
-* 📈 Tracks current streak and max streak
-* 💾 Saves scores in SQLite
-* 🧱 Clean modular architecture
+* 🎯 Two training modes:
+
+  * **Sound** → plays Morse audio
+  * **Visual** → displays Morse code
+* 🎮 Interactive CLI menu (arrow navigation)
+* 🔥 Streak + max streak tracking
+* 💾 SQLite score persistence (per level)
+* 🎚️ Custom difficulty via “level” input
+* 🎨 Colored terminal output
 
 ---
 
@@ -19,10 +23,10 @@ The app plays a Morse sequence (audio) and prompts you to guess the correspondin
 
 ```
 /morse-trainer
-    ├── index.js      # Main entry point
-    ├── morse.js      # Morse mappings + utilities
-    ├── audio.js      # Sound playback (beeps)
-    ├── db.js         # SQLite persistence
+  ├── index.js      # Main game loop + menu
+  ├── morse.js      # Morse mappings + random logic
+  ├── audio.js      # Morse sound playback
+  ├── db.js         # SQLite persistence
 ```
 
 ---
@@ -42,46 +46,96 @@ cd morse-trainer
 npm install
 ```
 
+Dependencies used:
+
+* `sqlite3`
+* `colors`
+
 ---
 
 ## Usage
 
-Run the trainer:
-
-```
+```bash
 node index.js
 ```
 
-First a level will be prompt :
-```
-Level  >> 
-```
-Type a number (1 to 6) to indicate the level you want and then press Enter. The level defines which letters will be used according to their lengths, based on Morse code.
+---
 
-You will hear a Morse sequence and be prompted:
-```
-Letter >>
-```
-Type the corresponding letter and press Enter.
+## Gameplay
+
+### 1. Choose a gamemode
+
+* **Visual** → Morse is displayed
+* **Sound** → Morse is played as audio
+* **Exit** → leave (bravely)
+
+### 2. Choose a level
+
+You input a level manually (e.g. number or custom logic depending on your implementation).
+
+### 3. Play
+
+* A random letter is selected
+* You must guess it
+* The game tracks:
+
+  * 🔥 current streak
+  * 🏆 max streak
+
+### 4. Fail
+
+* Your streak resets
+* Your score is saved in SQLite
 
 ---
 
-## How It Works
+## Example (Visual mode)
 
-* A random letter is selected from a predefined set
-* Its Morse code is played using system beeps
-* You input your guess
-* The app updates:
+```
+◜══════════════════
+| Morse  >>  .-
+| Letter >>  A
+| [🔥] streak : 3
+| [🔥] Max    : 7
+◟══════════════════
+```
 
-  * Current streak
-  * Maximum streak
+---
+
+## Example (Sound mode)
+
+```
+◜══════════════════
+(bip bip...)
+| Letter >>  S
+| [🔥] streak : 3
+| [🔥] Max    : 7
+◟══════════════════
+```
 
 ---
 
 ## Notes
 
-* Audio playback relies on Windows PowerShell (`[console]::beep`)
-* Behavior may vary depending on system configuration
-* Terminal must allow sound output
+* Sound mode uses system beeps (Windows PowerShell)
+* Visual mode is faster for pattern recognition
+* Scores are stored per level
 
 ---
+
+## Possible Improvements
+
+* Adaptive difficulty (more frequent failed letters)
+* Real level system instead of manual input
+* Word training mode
+* Per-letter statistics
+* Better audio engine (avoid spawning processes per beep)
+* UI polish (less “terminal from 1998” vibes)
+
+---
+
+## Philosophy
+
+* Keep it simple
+* Train recognition, not decoding
+* Short sessions, high intensity
